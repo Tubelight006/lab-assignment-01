@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, equal,dec, add, minus, div, mult,clean,back,log,sin,cos,tan,ln,exp,pi;
+    private Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, equal,dec, add, minus, div, mult,clean,back,log,sin,cos,tan,ln,exp,pi,per,com,pow,sqr;
     private TextView t1, t2;
     public String a, b, u = "",si="",con="", e = "Math error";
-    char ch;
+    char ch=' ';
     double exp1=Math.exp(1),v=0.0,pie=Math.PI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
         ln=findViewById(R.id.ln);
         exp=findViewById(R.id.exp);
         pi=findViewById(R.id.pi);
+        per=findViewById(R.id.permutation);
+        com=findViewById(R.id.combination);
+        pow=findViewById(R.id.power);
+        sqr=findViewById(R.id.fact);
 
 
         t1 = findViewById(R.id.textView1);
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 u = u + "*";
                 con=si+u;
-                t1.setText(con);  u=a;
+                t1.setText(con);
                 ch = '*';
             }
         });
@@ -223,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String s=t1.getText().toString();
                 b=s.substring(0,s.length()-1);
-                u=b;
+                u=u.substring(0,u.length()-1);
                 t1.setText(b);
 
             }
@@ -268,92 +272,158 @@ public class MainActivity extends AppCompatActivity {
                 t1.setText(si);
             }
         });
+        sqr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Double x=Double.parseDouble(u);
+               u=u+"!";
+               t1.setText(u);
+               x=fact(x);
+               u=""+x;
+               t2.setText(u);
+            }
+        });
+        per.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                u = u + "P";
+                con=si+u;
+                t1.setText(con);
+                ch = 'P';
 
+            }
+        });
+        com.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                u = u + "C";
+                con=si+u;
+                t1.setText(con);
+                ch = 'C';
+
+            }
+        });
+        pow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                u = u + "^";
+                con=si+u;
+                t1.setText(con);
+                ch = '^';
+
+            }
+        });
     }
     public void cal() {
-        b = t1.getText().toString();
-        if(si.length()>0)
-        {   u=change(u);
-            v=Double.parseDouble(u);
-            double val=0.0d;
-            if(si.equals("log "))
-            {
-                val=Math.log10(v);
-            }
-            if(si.equals("ln "))
-            {
-                val=Math.log(v);
-            }
-            if(si.equals("sin "))
-            {
-                val = Math.sin(Math.toRadians(v));
-            }
-            if(si.equals("cos "))
-                val=Math.cos(Math.toRadians(v));
-            if(si.equals("tan "))
-            {   if(v==90)
-            {
-                t2.setText(e);
-                return;
-            }
-                if(v==45) {
-                    t2.setText("1");
-                    return;
+        if(ch==' ')
+            t2.setText(u);
+
+            b = t1.getText().toString();
+            if (si.length() > 0) {
+                u = change(u);
+                v = Double.parseDouble(u);
+                double val = 0.0d;
+                if (si.equals("log ")) {
+                    val = Math.log10(v);
                 }
+                if (si.equals("ln ")) {
+                    val = Math.log(v);
+                }
+                if (si.equals("sin ")) {
+                    val = Math.sin(Math.toRadians(v));
+                }
+                if (si.equals("cos "))
+                    val = Math.cos(Math.toRadians(v));
+                if (si.equals("tan ")) {
+                    if (v == 90) {
+                        t2.setText(e);
+                        return;
+                    }
+                    if (v == 45) {
+                        t2.setText("1");
+                        return;
+                    }
 
 
-
-                val=Math.tan(Math.toRadians(v));
-            }
-            a=""+val;
-            t2.setText(a);
-            si="";
-            u="";
-            return;
-
-
-        }
-        if(u.equals("e"))
-        {
-
-            String x=""+exp1;
-            t2.setText(x);
-            return;
-        }
-        if(u.equals("π"))
-        {
-
-            String x=""+pie;
-            t2.setText(x);
-            return;
-        }
-
-        b=change(b);
-        double a1 = Double.parseDouble(b.substring(0, b.indexOf(ch)));
-
-        double a2 = Double.parseDouble(b.substring(b.indexOf(ch) + 1));
-        if (ch == '+')
-            a1 = a1 + a2;
-        if (ch == '-')
-            a1 = a1 - a2;
-        if (ch == '*')
-            a1 = a1 * a2;
-        if (ch == '/') {
-            if (a2 == 0) {
-
-                Toast.makeText(getApplicationContext(),e,Toast.LENGTH_LONG).show();
+                    val = Math.tan(Math.toRadians(v));
+                }
+                a = "" + val;
+                t2.setText(a);
+                si = "";
+                u = "";
                 return;
-            } else
-                a1 = a1 / a2;
+
+
+            }
+            if (u.equals("e")) {
+
+                String x = "" + exp1;
+                t2.setText(x);
+                return;
+            }
+            if (u.equals("π")) {
+
+                String x = "" + pie;
+                t2.setText(x);
+                return;
+            }
+
+            b = change(b);
+            double a1 = Double.parseDouble(b.substring(0, b.indexOf(ch)));
+            if(u.charAt(u.length()-1)==ch)
+                Toast.makeText(getApplicationContext(),"Operand missing", Toast.LENGTH_LONG).show();
+            else {
+                double a2 = Double.parseDouble(b.substring(b.indexOf(ch) + 1));
+                if (ch == '+')
+                    a1 = a1 + a2;
+                if (ch == '-')
+                    a1 = a1 - a2;
+                if (ch == '*')
+                    a1 = a1 * a2;
+                if (ch == '/') {
+                    if (a2 == 0) {
+
+                        Toast.makeText(getApplicationContext(), e, Toast.LENGTH_LONG).show();
+                        return;
+                    } else
+                        a1 = a1 / a2;
+                }
+                if (ch == 'P') {
+                   if(a2>a1){
+                       Toast.makeText(getApplicationContext(),"Not possible", Toast.LENGTH_LONG).show();
+                       return;}
+
+                    if(a1==a2)
+                        a1=1.0;
+                    else{
+                    Double a = fact(a1);
+                    Double x = a1 - a2;
+                    Double b = fact(x);
+                    a1 = a / b;}
+                }
+                if (ch == 'C') {
+                    if(a2>a1){
+                        Toast.makeText(getApplicationContext(),"Not possible", Toast.LENGTH_LONG).show();
+                        return;}
+                    if(a1==a2)
+                        a1=1.0;
+                    else{
+                    Double a = fact(a1);
+                    Double c = fact(a2);
+                    Double x = a1 - a2;
+                    Double b = fact(x);
+                    a1 = a / (b * c);}
+                }
+                if (ch == '^') {
+                    a1 = Math.pow(a1, a2);
+                }
+                a = "" + a1;
+                t2.setText(a);
+                u = a;
+            }
         }
 
-        a = "" + a1;
-        t2.setText(a);
-
-
-
-    }
-    public String change(String t)
+        public String change(String t)
     {
         String v=""+exp1,val="",ti=""+pie;
         int p=0;
@@ -373,6 +443,15 @@ public class MainActivity extends AppCompatActivity {
         }
         val=val+t.substring(p);
         return val;
+    }
+    public Double fact(Double a)    {
+        if(a==0)
+            return 1.0;
+
+        Double i, f=1.0;
+        for(i=2.0;i<=a;i++)
+            f=f*i;
+        return f;
     }
 }
 
