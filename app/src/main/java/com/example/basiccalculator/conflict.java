@@ -6,6 +6,7 @@ public class conflict {
     public conflict(int a, int b) {
         this.a = a;
         this.b = b;
+        System.out.print("Hasib");
     }
 
     public int getA() {
